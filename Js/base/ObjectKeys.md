@@ -43,6 +43,7 @@ Object.keys在内部会根据属性名key的类型进行不同的排序逻辑。
 调用CreateArrayFromList(nameList)得到最终的结果
 :::
 
+## 获得属性列表（EnumerableOwnPropertyNames(obj, "key")）
 而OrdinaryOwnPropertyKeys是这样规定的：
 
 - 声明变量keys值为一个空列表（List类型）
@@ -73,4 +74,4 @@ Object.values
 for...in循环
 Object.getOwnPropertyNames
 Reflect.ownKeys
-
+注意：以上API除了Reflect.ownKeys之外，其他API均会将Symbol类型的属性过滤掉。
