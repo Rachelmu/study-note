@@ -1,0 +1,8 @@
+给定一个无序整形数组，找出排序后连续出现的数字区间
+
+var list = [7,2,11,2,0,1,4,2,5,10,13,14,15]
+function summaryRanges(list){
+   // 补全代码
+}
+var result = summaryRanges(list);
+console.log(result) // ["0->2", "4->5", "7", "10->11", "13->15"]
