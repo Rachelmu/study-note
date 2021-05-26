@@ -17,6 +17,72 @@ bigint
 let mu = 111  // 这只是字面量，不是 number 类型
 mu.toString() // 使用时候才会转换为对象类型
 ```
+### null和undefined
+null与undefined都可以表示“没有”，含义非常相似。将一个变量赋值为undefined或null，老实说，语法效果几乎没区别。
+```js
+var a = undefined;
+// or
+var a = null;
+```
+上面代码中，变量a分别被赋值为undefined和null，这两种写法的效果几乎等价。
+在if语句中，它们都会被自动转为false，相等运算符（==）甚至直接报告两者相等。
+
+1995年 JavaScript 诞生时，最初像 Java 一样，只设置了null表示"无"。根据 C 语言的传统，null可以自动转为0。
+```js
+Number(null)  // 0
+5 + null      // 5
+```
+
+#### 区别
+两者区别是这样的：null是一个表示“空”的对象，转为数值时为0；undefined是一个表示"此处无定义"的原始值，转为数值时为NaN。
+```js
+Number(undefined) // NaN
+5 + undefined // NaN
+```
+
+#### 用法和含义
+null表示空值，即该处的值现在为空。调用函数时，某个参数未设置任何值，这时就可以传入null，表示该参数为空。比如，某个函数接受引擎抛出的错误作为参数，如果运行过程中未出错，那么这个参数就会传入null，表示未发生错误。
+
+undefined表示“未定义”，下面是返回undefined的典型场景。
+``` js
+// 变量声明了，但没有赋值
+var i;
+i // undefined
+
+// 调用函数时，应该提供的参数没有提供，该参数等于 undefined
+function f(x) {
+  return x;
+}
+f() // undefined
+
+// 对象没有赋值的属性
+var  o = new Object();
+o.p // undefined
+
+// 函数没有返回值时，默认返回 undefined
+function f() {}
+f() // undefined
+```
+
+### 布尔值
+布尔值代表“真”和“假”两个状态。“真”用关键字true表示，“假”用关键字false表示。布尔值只有这两个值。
+
+下列运算符会返回布尔值：
+> - 前置逻辑运算符： ! (Not)
+> - 相等运算符：===，!==，==，!=
+> - 比较运算符：>，>=，<，<=
+
+如果 JavaScript 预期某个位置应该是布尔值，会将该位置上现有的值自动转为布尔值。转换规则是除了下面六个值被转为false，其他值都视为true。
+> - undefined
+> - null
+> - false
+> - 0
+> - NaN
+> - ""或''（空字符串）
+
+>
+> 注意，空数组（[]）和空对象（{}）对应的布尔值，都是true。
+>
 
 ## 引用数据类型
 对象Object（包含普通对象-Object，数组对象-Array，正则对象-RegExp，日期对象-Date，数学函数-Math，函数对象-Function）
@@ -43,11 +109,14 @@ JavaScript 有三种方法，可以确定一个值到底是什么类型。
 
 ### Typeof
 typeof运算符可以返回一个值的数据类型。
+typeof 对于基本类型，除了 null 都可以显示正确的类型
+
 数值、字符串、布尔值分别返回number、string、boolean。
 ```js
 typeof 123 // "number"
 typeof '123' // "string"
 typeof false // "boolean"
+typeof b // b 没有声明，但是还会显示 undefined
 ```
 
 函数返回function。
@@ -74,3 +143,36 @@ if (typeof v === "undefined") {
   // ...
 }
 ```
+
+对象返回object。
+null返回object。
+```js
+typeof window // "object"
+typeof {}     // "object"
+typeof []     // "object"
+typeof console.log // 'function'
+typeof null // "object"
+```
+null的类型是object，这是由于历史原因造成的。1995年的 JavaScript 语言第一版，只设计了五种数据类型（对象、整数、浮点数、字符串和布尔值），没考虑null，只把它当作object的一种特殊值。后来null独立出来，作为一种单独的数据类型，为了兼容以前的代码，typeof null返回object就没法改变了。
+在 JS 的最初版本中，使用的是 32 位系统，为了性能考虑使用低位存储了变量的类型信息，000 开头代表是对象，然而 null 表示为全零，所以将它错误的判断为 object 。虽然现在的内部类型判断代码已经改变了，但是对于这个 Bug 却是一直流传下来。
+
+``` js
+let a
+// 我们也可以这样判断 undefined
+a === undefined
+// 但是 undefined 不是保留字，能够在低版本浏览器被赋值
+let undefined = 1
+// 这样判断就会出错
+// 所以可以用下面的方式来判断，并且代码量更少
+// 因为 void 后面随便跟上一个组成表达式
+// 返回就是 undefined
+a === void 0
+```
+
+### instanceof
+
+### Object.prototype.toString
+如果我们想获得一个变量的正确类型，可以通过 Object.prototype.toString.call(xx)。这样我们就可以获得类似 [object Type] 的字符串。
+
+
+## 类型转换
