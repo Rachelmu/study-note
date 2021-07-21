@@ -69,11 +69,127 @@ let undefined = 1
 // 返回就是 undefined
 a === void 0
 ```
+对于引用数据类型，采用typeof判断对象数据类型是不合适的，采用instanceof会更好，instanceof的原理是基于原型链的查询，只要处于原型链中，判断永远为true
+
+## Number.isNaN() 、 isNaN()
+
+typeof + Number.isNaN()准确判断数字类型
+``` js
+function _isNum(num) {
+  return typeof num === 'number' && !Number.isNaN(num)
+}
+
+```
+Number.isNaN()：用于确定传递的值是否为 NaN，并且检查其类型是否为 Number
+isNaN()：也是用来判断值是否为NaN，和上面不同的是，如果传递的值不是number类型，会使用Number()进行强转后判断。来试着实现一个polyfill：
+``` js
+var isNaN = isNaN || function (v) {
+    var n = Number(v)
+    return n !== n
+}
+
+```
+上述中使用了NaN的一个特性，就是自身永远不等于自身。
+
+用isNaN()实现一个Number.isNaN()：
+``` js
+Number.isNaN = Number.isNaN || function(v) {
+  return typeof v === 'number' && isNaN(v)
+}
+
+```
 
 ## instanceof
+用来判断左边的对象实例的原型链上是否存在右边构造函数的prototype
+``` js
+let date = new Date()
+date instanceof Date // true
+date instanceof Object // true
+
+let fn = () => {}
+fn instanceof Function // true
+fn instanceof Object // true
+
+let arr = []
+arr instanceof Array // true
+arr instanceof Object // true
+
+let o = {}
+o instanceof Object // true
+
+class A {}
+let a = new A()
+a instanceof A // true
+a instanceof Object // true
+class A_1 extends A {}
+let a_1 = new A_1()
+a_1 instanceof A_1 // true
+a_1 instanceof A // true
+a_1 instanceof Object // true
+
+```
+
+通过上面的代码，总结一下规律，我们来实现一个简版的instanceof：
+``` js
+Object.prototype._instanceof = function (constru) {
+    let consProto = constru.prototype
+    let currentProto = this.__proto__
+    
+    while(true) {
+        if (currentProto === null) return false
+        if (currentProto === consProto) return true
+        currentProto = currentProto.__proto__
+    }
+}
+
+```
+注意： Object.prototype.__proto__ 虽然被广大浏览器支持，且此属性已被ES6规范中标准化，但是规范里仍不建议使用此属性，我们可以使用Object.getPrototypeOf()代替它。
+为什么instanceof 判断不了基本类型？
+``` js
+let n  = 2
+n instanceof Number  // false
+n instanceof Object // false
+
+let n_n = new Number(2)
+n_n instanceof Number // true
+n_n instanceof Object // true
+
+let str = 'Madman'
+str instanceof String // false
+str instanceof Object // false
+
+let str_str = new String('Madman')
+str_str instanceof String // true
+str_str instanceof Object // true
+
+```
+
+我们知道创建变量常用的两种方式：一个是字面量，一个是通过构造函数。
+
+像直接通过字面量声明的变量我们称之为“原始值”，原始值是没有任何属性和方法的，只有当起被使用时才会被装箱。所以一般不使用instanceof 判断这种基本数据类型。
 
 ## Object.prototype.toString
 如果我们想获得一个变量的正确类型，可以通过 Object.prototype.toString.call(xx)。这样我们就可以获得类似 [object Type] 的字符串。
 
 
 # 类型转换
+- 字符串拼接
+- ==
+- if语句和逻辑运算
+
+## 字符串拼接
+``` js
+const a = 100 + 10 //110
+const b = 100 + '10' // '10010'
+const c = true + '10'  // 'true10'
+```
+
+## ==
+``` js
+100 == '100' // true
+0 == ''     // true
+0 == false  // true
+false == '' // true
+null == undefined // true
+```
+
