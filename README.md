@@ -7,6 +7,9 @@
 
 ...
 
+## 重温JS系列
+
+[基本使用](./relearn/index.md)
 
 ## Vue
 
