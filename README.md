@@ -1,15 +1,21 @@
 ## 前端知识架构
-
+本专栏主要是自己学习的一些总结
 
 参考: 
 
 [伢羽大大的JS深入](https://github.com/mqyqingfeng/Blog)
 
 ...
+## CSS
+[基本使用](./CSS/index.md)
 
 ## 重温JS系列
 
 [基本使用](./relearn/index.md)
+
+## TS系列
+
+[基本使用](./TS/index.md)
 
 ## Vue
 
