@@ -31,3 +31,19 @@ Iterator 的遍历过程是这样的。
 （4）不断调用指针对象的next方法，直到它指向数据结构的结束位置。
 
 每一次调用next方法，都会返回数据结构的当前成员的信息。具体来说，就是返回一个包含value和done两个属性的对象。其中，value属性是当前成员的值，done属性是一个布尔值，表示遍历是否结束。
+
+## 默认 Iterator 接口
+``` js
+const obj = {
+  [Symbol.iterator] : function () {
+    return {
+      next: function () {
+        return {
+          value: 1,
+          done: true
+        };
+      }
+    };
+  }
+};
+```
