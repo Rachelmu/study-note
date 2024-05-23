@@ -6,4 +6,6 @@
 
 2、[CSS手写代码](./codeCss.md)
 
-3、[介绍下 BFC 及其应用](./BFC.md)
+3、[BFC及其应用](./BFC.md)
+
+4、[Flex及其应用](./flex.md)
