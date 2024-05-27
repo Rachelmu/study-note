@@ -66,7 +66,7 @@ align-items属性定义项目在交叉轴上如何对齐。
 - baseline: 项目的第一行文字的基线对齐。
 - stretch（默认值）：如果项目未设置高度或设为auto，将占满整个容器的高度。
 
-## align-content属性
+### align-content属性
 align-content属性定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用。
 ``` css
 .box {
@@ -81,3 +81,10 @@ align-content属性定义了多根轴线的对齐方式。如果项目只有一�
 - space-around：每根轴线两侧的间隔都相等。所以，轴线之间的间隔比轴线与边框的间隔大一倍。
 - stretch（默认值）：轴线占满整个交叉轴。
 
+## 项目的属性
+- order
+- flex-grow
+- flex-shrink
+- flex-basis
+- flex
+- align-self
